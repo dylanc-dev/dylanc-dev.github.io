@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dylan Cox — Software Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0e0e0e;
+      --white: #f5f3ef;
+      --accent: #1a1a1a;
+      --muted: #888;
+      --border: #ddd8d0;
+      --ink: #2a2a2a;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 4rem;
+      background: rgba(245, 243, 239, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--muted); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 4rem 5rem;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      max-width: 480px;
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--black);
+      color: var(--black);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover { background: var(--black); color: var(--white); }
+
+    .btn-fill {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .btn-fill:hover { background: var(--ink); border-color: var(--ink); }
+
+    .hero-number {
+      position: absolute;
+      right: 4rem;
+      bottom: 5rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--border);
+      letter-spacing: 0.1em;
+      writing-mode: vertical-rl;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 7rem 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .about-text h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2;
+      margin-bottom: 2rem;
+      color: var(--black);
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    .about-details {
+      padding-top: 1rem;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+
+    .detail-row span:first-child {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .detail-row span:last-child { color: var(--ink); }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+
+    .skill-group {
+      padding: 2.5rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-group:nth-child(3n) { border-right: none; }
+    .skill-group:nth-last-child(-n+3) { border-bottom: none; }
+
+    .skill-group h3 {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border);
+      color: var(--ink);
+      background: transparent;
+      transition: all 0.15s;
+    }
+
+    .tag:hover { border-color: var(--black); background: var(--black); color: var(--white); }
+
+    /* PROJECTS */
+    .projects-list { display: flex; flex-direction: column; }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 2rem;
+      align-items: start;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+      cursor: default;
+    }
+
+    .project-item:first-child { border-top: 1px solid var(--border); }
+
+    .project-num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--border);
+      padding-top: 0.3rem;
+    }
+
+    .project-info h3 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-info p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      max-width: 540px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .project-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+    }
+
+    .project-arrow {
+      font-size: 1.25rem;
+      color: var(--border);
+      padding-top: 0.2rem;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .project-item:hover .project-arrow {
+      color: var(--black);
+      transform: translate(3px, -3px);
+    }
+
+    /* CONTACT */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-left h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-left p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 0; }
+
+    .contact-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 0.9rem;
+      transition: padding-left 0.2s;
+    }
+
+    .contact-link:first-child { border-top: 1px solid var(--border); }
+    .contact-link:hover { padding-left: 0.5rem; }
+
+    .contact-link span:first-child {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      width: 80px;
+    }
+
+    .contact-link span:last-child { color: var(--border); }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .form-group label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 0;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--black); }
+
+    .form-submit {
+      margin-top: 0.5rem;
+      align-self: flex-start;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--border);
+      letter-spacing: 0.08em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .hero { padding: 0 1.5rem 4rem; }
+      section { padding: 5rem 1.5rem; }
+      .about-grid, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .skill-group:nth-child(3n) { border-right: 1px solid var(--border); }
+      .skill-group:nth-child(2n) { border-right: none; }
+      .project-item { grid-template-columns: 50px 1fr auto; gap: 1rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+      .hero-number { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#">DC — Portfolio</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Dylan Cox — CS Student & Developer</p>
+    <h1>Building things<br>with <em>clean code</em><br>& curiosity.</h1>
+    <p class="hero-sub">Computer Science student at Baker College. Interested in software engineering, web development, and AI. Based in Howell, MI.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-fill">View Projects</a>
+      <a href="DylanCox_resume_v5.docx" download class="btn">Download Résumé</a>
+    </div>
+    <span class="hero-number">42.607° N / 83.929° W</span>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label reveal">01 — About</p>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <h2>CS student who builds real things.</h2>
+        <p>I'm a Computer Science student at Baker College pursuing my B.S., with a background in Java, Python, and JavaScript. I've had the chance to apply my skills outside the classroom — redesigning a business's online presence and building tools that people actually use.</p>
+        <p>I pick up new technologies quickly, communicate clearly with clients, and care about writing code that's clean and maintainable. I'm currently deepening my Java skills and looking for a CS internship where I can contribute and grow.</p>
+        <div style="margin-top:2rem;">
+          <a href="#contact" class="btn">Get in touch →</a>
+        </div>
+      </div>
+      <div class="about-details reveal">
+        <div class="detail-row"><span>Status</span><span>Seeking 2025/2026 Internship</span></div>
+        <div class="detail-row"><span>Education</span><span>Baker College — B.S. CS, 2027</span></div>
+        <div class="detail-row"><span>GPA</span><span>3.1 / 4.0</span></div>
+        <div class="detail-row"><span>Location</span><span>Howell, Michigan</span></div>
+        <div class="detail-row"><span>Interests</span><span>Software Eng · Web Dev · AI</span></div>
+        <div class="detail-row"><span>GitHub</span><span><a href="https://github.com/dylanc-dev" style="color:inherit;">dylanc-dev</a></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label reveal">02 — Skills</p>
+    <div class="skills-grid reveal">
+      <div class="skill-group">
+        <h3>Languages</h3>
+        <div class="skill-tags">
+          <span class="tag">Java</span>
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">C#</span>
+          <span class="tag">C++</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Web & Tools</h3>
+        <div class="skill-tags">
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">Google Sites</span>
+          <span class="tag">Git</span>
+          <span class="tag">GitHub</span>
+          <span class="tag">VS Code</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Software</h3>
+        <div class="skill-tags">
+          <span class="tag">AutoCAD</span>
+          <span class="tag">Photoshop</span>
+          <span class="tag">MS Office</span>
+          <span class="tag">Google Workspace</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Concepts</h3>
+        <div class="skill-tags">
+          <span class="tag">OOP</span>
+          <span class="tag">Software Engineering</span>
+          <span class="tag">QA & Testing</span>
+          <span class="tag">Embedded Systems</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Coursework</h3>
+        <div class="skill-tags">
+          <span class="tag">Intro to AI</span>
+          <span class="tag">Data Structures</span>
+          <span class="tag">Sys Dev Methods</span>
+          <span class="tag">OS & Maintenance</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Soft Skills</h3>
+        <div class="skill-tags">
+          <span class="tag">Client Communication</span>
+          <span class="tag">Problem Solving</span>
+          <span class="tag">Teamwork</span>
+          <span class="tag">Adaptability</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label reveal">03 — Projects</p>
+    <div class="projects-list reveal">
+
+      <div class="project-item">
+        <span class="project-num">001</span>
+        <div class="project-info">
+          <h3>Bait Station — Web & Systems Overhaul</h3>
+          <p>Redesigned the company's Google Site, built a new customer-facing website, and developed a custom inventory management system for a retail bait shop in North Fort Myers, FL. Worked directly with the client from requirements through deployment.</p>
+          <div class="project-tags">
+            <span class="project-tag">Google Sites</span>
+            <span class="project-tag">HTML/CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">Freelance</span>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </div>
+
+      <div class="project-item">
+        <span class="project-num">002</span>
+        <div class="project-info">
+          <h3>Portfolio Website</h3>
+          <p>This site — designed and built from scratch using vanilla HTML, CSS, and JavaScript. Hosted on GitHub Pages.</p>
+          <div class="project-tags">
+            <span class="project-tag">HTML/CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">GitHub Pages</span>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </div>
+
+      <div class="project-item" style="opacity:0.45; cursor:default;">
+        <span class="project-num">003</span>
+        <div class="project-info">
+          <h3>More coming soon</h3>
+          <p>Currently working on new projects — check back or follow on GitHub.</p>
+          <div class="project-tags">
+            <span class="project-tag">In Progress</span>
+          </div>
+        </div>
+        <span class="project-arrow" style="color:var(--border);">—</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label reveal">04 — Contact</p>
+    <div class="contact-inner">
+      <div class="contact-left reveal">
+        <h2>Let's work together.</h2>
+        <p>Open to internship opportunities, freelance projects, and conversations about software engineering and web development.</p>
+        <div class="contact-links">
+          <a href="mailto:coxd376@gmail.com" class="contact-link">
+            <span>Email</span>
+            <span>coxd376@gmail.com</span>
+            <span>↗</span>
+          </a>
+          <a href="https://github.com/dylanc-dev" class="contact-link" target="_blank">
+            <span>GitHub</span>
+            <span>dylanc-dev</span>
+            <span>↗</span>
+          </a>
+          <a href="https://www.linkedin.com/in/dylan-cox" class="contact-link" target="_blank">
+            <span>LinkedIn</span>
+            <span>dylan-cox</span>
+            <span>↗</span>
+          </a>
+          <a href="DylanCox_resume_v5.docx" download class="contact-link">
+            <span>Résumé</span>
+            <span>Download .docx</span>
+            <span>↓</span>
+          </a>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea rows="5" placeholder="What's on your mind?"></textarea>
+        </div>
+        <a href="#" class="btn btn-fill form-submit"
+           onclick="this.textContent='Thanks! I\'ll be in touch.'; return false;">
+          Send Message
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Dylan Cox</p>
+    <p>Howell, MI — Built by hand</p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
